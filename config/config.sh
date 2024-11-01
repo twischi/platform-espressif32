@@ -8,7 +8,9 @@
 # YOUR GitHub user name, 
 #      where your fork of the platform-espressif32 exits
 #.................................................................
-userGH="twischi"
+userGH=$(git remote get-url origin) # Get the URL of the remote repository
+userGH=$(echo $userGH | sed -E 's#https://github.com/([^/]+)/.*#\1#') # Extract the user name
+echo "GH-Owner Name: $userGH"
 #.................................................................
 # YOUR PIRIVATE GitHub token, 
 #      needed to upload the RELEASE assets
