@@ -106,6 +106,8 @@ if [ -n "$tagExists" ]; then
     else
         echo -e "!!! SCRIPT STOPPED\n!!! YOU MAY DELETE THE TAG at GitHub FIRST!\n\n$urlREPO/releases\n" && exit 1
     fi
+else
+    echo -e "  Tag= $eBL'$rlVersionBuild'$eNO does not exist, creating it...\n"
 fi
 git tag -a $rlVersionBuild -m "Release version $rlVersionBuild"
 git push origin $rlVersionBuild --quiet
