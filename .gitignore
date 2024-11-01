@@ -1,0 +1,12 @@
+.vscode
+.DS_Store
+*.pyc
+*Jason2866*
+builder/frameworks/Jason2866*
+*OrgBackUp*
+platform.work.json
+forRelease/*.txt
+forRelease/*.sh
+forRelease/*.gz
+forRelease/*.zip
+config/.gitHubToken
