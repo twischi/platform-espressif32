@@ -9,4 +9,5 @@ forRelease/*.txt
 forRelease/*.sh
 forRelease/*.gz
 forRelease/*.zip
+forRelease/Archive/
 config/.gitHubToken
