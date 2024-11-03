@@ -50,3 +50,108 @@ board = ...
 ```
 
 Help for the `platform`-option see: [documentation](https://docs.platformio.org/en/latest/projectconf/sections/env/options/platform/platform.html#projectconf-env-platform)
+
+```json
+"tool-xtensa-esp-elf-gdb": {
+    "type": "debugger",
+    "optional": true,
+    "owner": "espressif",
+    "version": "~12.1.0"
+}
+```
+The `xtensa-esp-elf-gdb` is a version of the **GNU Debugger (GDB)** specifically built for **Xtensa** processors, which are commonly used in **ESP32** (& ESP8266) microcontrollers by Espressif. The name breaks down as follows:
+
+- **gdb**: The **GNU Debugger**, a powerful debugging tool that lets you inspect what happens inside a program as it executes.
+
+- **elf**: Refers to the **Executable and Linkable Format**, the standard file format for executable binaries on many platforms, including embedded systems.
+
+- **xtensa**: Refers to the Xtensa processor architecture, a highly customizable microcontroller core architecture developed by Tensilica, which is used in Espressif’s ESP32 chips.
+
+
+##### What It Does
+
+`xtensa-esp-elf-gdb` enables you to:
+
+- **Set breakpoints** in your code to pause execution at certain points.
+- **Inspect registers** and memory to understand the state of the system.
+- **Step through code** line by line, which helps with pinpointing issues in code execution.
+- **Examine variables and expressions** to track values during runtime.
+- **Debug remotely** on the ESP chip by connecting over a serial or JTAG connection, useful for hardware debugging.
+
+#### Why It’s Necessary for ESP32
+
+Some ESP32-chips are based on the Xtensa architecture, so the standard `gdb` debugger for common architectures wouldn’t work with them. Espressif’s toolchain includes the `xtensa-esp-elf-gdb` specifically to debug programs on ESP processors. This tool integrates well with popular IDEs (like **VS Code with PlatformIO**) and allows embedded developers to debug ESP-based projects directly on the hardware.
+
+#### Sources
+xtensa-esp-elf-gdb
+
+- [List of ESP-IDF-Tools](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-tools.html?highlight=xtensa%20esp%20elf%20gdb#list-of-esp-idf-tools)
+
+- [Registry PIO](https://registry.platformio.org/search?q=xtensa-esp-elf-gdb)
+
+> - [platform/... Versions](https://registry.platformio.org/tools/platformio/tool-xtensa-esp-elf-gdb/versions)
+
+> - [espressif/... Versions](https://registry.platformio.org/tools/espressif/tool-xtensa-esp-elf-gdb/versions)
+
+
+## Work in progress
+
+```json
+ "packages": {
+    "framework-arduinoespressif32": {
+      "type": "framework",
+      "optional": true,
+      "owner": "twischi",
+      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_tag_v5.1.4-AR_tag_3.0.1/framework-arduinoespressif32-IDF_tag_v5.1.4-AR_tag_3.0.1.tar.gz"
+    },
+    "framework-espidf": {
+      "type": "framework",
+      "optional": true,
+      "owner": "espressif",
+      "version": "https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip"
+    },
+    "toolchain-xtensa-esp32": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "espressif",
+      "version": "12.2.0+20230208"
+    },
+    "toolchain-xtensa-esp32s2": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "espressif",
+      "version": "12.2.0+20230208"
+    },
+    "toolchain-xtensa-esp32s3": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "espressif",
+      "version": "12.2.0+20230208"
+    },
+    "toolchain-riscv32-esp": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "espressif",
+      "version": "12.2.0+20230208"
+    },
+    "toolchain-esp32ulp": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "platformio",
+      "version": "~1.23500.0"
+    },
+    "tool-xtensa-esp-elf-gdb": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "espressif",
+      "version": "~12.1.0"
+    },
+    "tool-riscv32-esp-elf-gdb": {
+      "type": "debugger",
+      "optional": true,
+      "owner": "espressif",
+      "version": "~12.1.0"
+
+
+```
+Normal 
