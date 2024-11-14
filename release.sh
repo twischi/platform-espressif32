@@ -4,8 +4,21 @@
 # ----------------------------------------------------------------
 # This script updates the platform.json file with the new values
 # and than creates a new release.
+# 
+# --- Introduce 'dryrun'-option (2024-11-14)
+#     Call this script with 'dryrun' as argument for TESTING  
 # ----------------------------------------------------------------
 
+# *********************************************************
+# Check if the script is called with 'dryrun' as argument
+# -> Set and export flag 'dryrun'
+# *********************************************************
+dryrun=false
+if [ "$1" == "dryrun" ]; then
+    echo -e "\n--- DRY-RUN MODE ---\n" &&
+    dryrun=true
+fi
+export dryrun
 # *********************************************
 # Several common Funtions partly OS dependent
 # *********************************************
@@ -72,7 +85,10 @@ echo
 urlfrwkArEsp32="$urlREPO/releases/download/$rlVersionBuild/$rlFN"
 echo -e "\n--- 1) Update platform.json for the new release\n"
 source config/updatePlatformJson.sh
-echo 
+echo
+
+exit 0
+
 #.................................................................
 # Commit and push the changes platform.json
 #.................................................................
