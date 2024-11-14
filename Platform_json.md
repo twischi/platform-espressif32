@@ -18,6 +18,11 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 
   * [Registry PIO "toolchain-xtensa-esp-elf"](https://registry.platformio.org/search?q=toolchain-xtensa-esp-elf)
 
+```json
+    "toolchain-xtensa-esp-elf": {"type": "toolchain", "optional": true,
+        "owner": "platformio", "version": "13.2.0+20240530"}
+```
+
 ### <u>toolchain-xtensa-esp32</u>
 
 > Provided the customized Xtensa toolchain needed to build and compile code for Espressif's ESP32 microcontrollers with the Xtensa architecture. This toolchain includes essential components such as the compiler (xtensa-esp32-elf-gcc), assembler, and linker, optimized for the Xtensa architecture used in these ESP32 chips.
@@ -25,6 +30,12 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 * ### Sources
 
   * [Registry PIO "toolchain-xtensa-esp32"](https://registry.platformio.org/search?q=toolchain-xtensa-esp32)
+
+```json
+    "toolchain-xtensa-esp32": {
+        "type": "toolchain","optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"}
+```
 
 ### <u>toolchain-xtensa-esp32s2</u>
 
@@ -34,6 +45,12 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 
   * [Registry PIO "toolchain-xtensa-esp32s2"](https://registry.platformio.org/search?q=toolchain-xtensa-esp32s2)
 
+```json
+    "toolchain-xtensa-esp32s2": {
+        "type": "toolchain", "optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"}
+```
+
 ### <u>toolchain-xtensa-esp32s3</u>
 
 > Provide a Xtensa toolchain designed specifically for the ESP32-S3 microcontrollers. Although both ESP32 and ESP32-S3 use Xtensa cores, the ESP32-S3 has different hardware features and is optimized for the ESP32-S3’s Xtensa LX7 core, which supports new instructions and enhanced AI acceleration features.
@@ -41,6 +58,12 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 * ### Sources
 
   * [Registry PIO "toolchain-xtensa-esp32s3"](https://registry.platformio.org/search?q=toolchain-xtensa-esp32s3)
+
+```json
+    "toolchain-xtensa-esp32s3": {
+        "type": "toolchain", "optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"}
+```
 
 ### <u>toolchain-riscv32-esp</u>
 
@@ -50,6 +73,12 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 
   * [Registry PIO "toolchain-riscv32-esp"](https://registry.platformio.org/search?q=toolchain-riscv32-esp)
 
+```json
+    "toolchain-riscv32-esp": {
+        "type": "toolchain", "optional": true,
+        "owner": "platformio","version": "13.2.0+20240530"}
+```
+
 ### <u>toolchain-esp32ulp</u>
 
 > Adds support for the Espressif ESP32 ***Ultra-Low-Power***(ULP) Co-processor. The ULP coprocessor is a small, specialized processor in ESP32 microcontrollers designed to handle low-power tasks while the main processor is in deep sleep mode, allowing the device to save power.
@@ -57,6 +86,12 @@ To install the PIO-platform `espressif32` the file **`platform.json`** steers th
 * ### Sources
 
   * [Registry PIO "toolchain-esp32ulp"](https://registry.platformio.org/search?q=toolchain-esp32ulp)
+
+```json
+    "toolchain-esp32ulp": {
+        "type": "toolchain", "optional": true,
+        "owner": "platformio", "version": "~1.23800.0"
+```
 
 ## Debugger
 
@@ -77,21 +112,9 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [List of ESP-IDF-Tools > xtensa-esp-elf-gdb](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-tools.html?#xtensa-esp-elf-gdb)
 
 ```json
-      "tool-xtensa-esp-elf-gdb": {
-          "type": "debugger",
-          "optional": true,
-          "owner": "espressif",
-          "version": "~12.1.0"}
-```
-
-  * Alternative:
-
-```json
-      "tool-xtensa-esp-elf-gdb": {
-          "type": "debugger",
-          "optional": true,
-          "owner": "platformio",
-          "version": "~14.2.0"}
+    "tool-xtensa-esp-elf-gdb": {
+        "type": "debugger", "optional": true,
+        "owner": "espressif", "version": "~12.1.0"}
 ```
 
 ### <u>tool-riscv32-esp-elf-gdb</u>
@@ -104,20 +127,9 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [List of ESP-IDF-Tools > riscv32-esp-elf-gdb](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-tools.html#riscv32-esp-elf-gdb)
 
 ```json
-      "tool-riscv32-esp-elf-gdb": {
-        "type": "debugger",
-        "optional": true,
-        "owner": "espressif",
-        "version": "~12.1.0"}
-```
-  * Alternative:
-
-```json
-      "tool-riscv32-esp-elf-gdb": {
-          "type": "debugger",
-          "optional": true,
-          "owner": "platformio",
-          "version": "~14.2.0"}
+    "tool-riscv32-esp-elf-gdb": {
+        "type": "debugger", "optional": true,
+        "owner": "espressif", "version": "~12.1.0"}
 ```
 
 ### <u>tool-openocd-esp32</u>
@@ -128,12 +140,10 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [Registry PIO "tool-openocd-esp32"](https://registry.platformio.org/search?q=tool-openocd-esp32)
   * [List of ESP-IDF-Tools > openocd-esp32](https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-guides/tools/idf-tools.html?#openocd-esp32)
 
- ```json
-      "tool-openocd-esp32": {
-        "type": "debugger",
-        "optional": true,
-        "owner": "platformio",
-        "version": "~2.1200.0"}
+```json
+    "tool-openocd-esp32": {
+        "type": "debugger", "optional": true,
+        "owner": "platformio", "version": "~2.1200.0"
 ```
 
 # Uploader
@@ -150,12 +160,10 @@ is an open-source tool used to interface with embedded systems for on-chip debug
 
   * [Registry PIO "tool-esptoolpy"](https://registry.platformio.org/search?q=tool-esptoolpy)
 
- ```json
-      "tool-esptoolpy": {
+```json
+    "tool-esptoolpy": {
         "type": "uploader",
-        "owner": "platformio",
-        "version": "~1.40501.0"
-    }
+        "owner": "platformio","version": "~1.40501.0"}
 ```
 
 ### <u>tool-dfuutil-arduino</u>
@@ -167,15 +175,11 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [Registry PIO "tool-dfuutil-arduino"](https://registry.platformio.org/search?q=tool-dfuutil-arduino)
   * [PIO - Packages > tool-dfuutil-arduino](https://docs.platformio.org/en/latest/platforms/espressif32.html#packages)
 
-### <u>tool-mkspiffs</u>
-
-> Is ussed to create and manage ***SPIFFS*** (SPI Flash File System) images for ESP32 (and ESP8266= microcontrollers. SPIFFS is a lightweight file system designed for flash storage, commonly used in embedded systems like Espressif’s chips, where space and memory are limited.
-
-* ### Sources
-
-  * [Registry PIO "tool-mkspiffs"](https://registry.platformio.org/search?q=tool-mkspiffs)
-  * [PIO - Packages > tool-mkspiffs](https://docs.platformio.org/en/latest/platforms/espressif32.html#packages)
-
+```json
+    "tool-dfuutil-arduino": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~1.11.0"}
+```
 
 ### <u>tool-mklittlefs</u>
 
@@ -187,6 +191,27 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [Espressif - Other Storages - LittleFS](https://docs.espressif.com/projects/esp-faq/en/latest/software-framework/storage/other-storages.html)
   * [Espressif - Details - LittleFS](https://components.espressif.com/components/joltwallet/littlefs)
 
+```json
+    "tool-mklittlefs": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~1.203.0"}
+```
+
+### <u>tool-mkspiffs</u>
+
+> Is ussed to create and manage ***SPIFFS*** (SPI Flash File System) images for ESP32 (& ESP8266= microcontrollers). SPIFFS is a lightweight file system designed for flash storage, commonly used in embedded systems like Espressif’s chips, where space and memory are limited.
+
+* ### Sources
+
+  * [Registry PIO "tool-mkspiffs"](https://registry.platformio.org/search?q=tool-mkspiffs)
+  * [PIO - Packages > tool-mkspiffs](https://docs.platformio.org/en/latest/platforms/espressif32.html#packages)
+
+```json
+    "tool-mkspiffs": {
+          "type": "uploader","optional": true,
+          "owner": "platformio","version": "~2.230.0"}
+```
+
 ### <u>tool-mkfatfs</u>
 
 > Is used to create a **FAT-File-System-Image** during build or upload. ***FAT (File Allocation Table)*** file system is needed, often for managing files on **SD cards** or other external storage connected to the microcontroller.
@@ -195,6 +220,12 @@ is an open-source tool used to interface with embedded systems for on-chip debug
 
   * [Registry PIO](https://registry.platformio.org/search?q=tool-mkfatfs)
   * [Espressif - FAT FS](https://docs.espressif.com/projects/esp-faq/en/latest/software-framework/storage/fatfs.html)
+
+```json
+    "tool-mkfatfs": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~2.0.0"}
+```
 
 # Without a type-specification
 
@@ -206,6 +237,26 @@ is an open-source tool used to interface with embedded systems for on-chip debug
 
   * [Registry PIO "tool-idf"](https://registry.platformio.org/search?q=tool-idf)
 
+```json
+    "tool-idf": {
+        "optional": true,
+        "owner": "platformio", "version": "~1.0.1" }
+```
+
+### <u>tool-mconf</u>
+
+> ***mconf*** provides a text-based, menu-driven interface for configuring project settings in ***ESP-IDF*** projects for ESP32. It’s commonly used to manage configuration options in embedded development.
+
+* ### Sources
+
+  * [Registry PIO "tool-mconf"](https://registry.platformio.org/search?q=tool-mconf)
+
+```json
+    "tool-mconf": {
+        "optional": true,
+        "owner": "platformio", "version": "~1.4060000.0"},
+```
+
 ### <u>tool-cmake</u>
 
 > ***CMake*** is a **cross-platform** build system generator for build buiding and linking source files. In the context of ESP32 and ESP8266 development, CMake is a critical tool for compiling and building firmware from source code, managing project dependencies, and configuring build options.
@@ -216,9 +267,21 @@ is an open-source tool used to interface with embedded systems for on-chip debug
   * [PIO - Packages > tool-cmake](https://docs.platformio.org/en/latest/platforms/espressif32.html#packages)
   * [Espressif - API Guides - CMake](https://docs.espressif.com/projects/esp-idf/en/release-v3.3/api-guides/build-system-cmake.html)
 
+```json
+    "tool-cmake": {
+          "optional": true,
+          "owner": "platformio", "version": "~3.21.0"}
+```
+
 ### <u>tool-ninja</u>
 
 > ***Ninja***, a small, fast build system often used **alongside CMake** to accelerate the build process of software projects, including those for ESP32 and ESP8266 microcontrollers.
+
+```json
+    "tool-ninja": {
+        "optional": true,
+        "owner": "platformio", "version": "^1.9.0"}
+```
 
 * ### Sources
 
