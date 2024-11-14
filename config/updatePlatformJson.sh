@@ -8,9 +8,9 @@ updateJsonValue() {
     local -a replaceElement=("${@}")              # Capture all arguments as an array
     # Get the Infos from array-argument
     local fileJson="platform.work.json"           # Working file
-    local toJsonPath=${replaceElement[0]}         # Path to elemen (e.g. .packages. or .repository.url)
-    local recordPath=${replaceElement[1]}         # to Record-Name (e.g. tool-ninja) if empty, no record
-    local inRecordPath=${replaceElement[2]}       # in Record Path (e.g. .version)
+    local toJsonPath=${replaceElement[0]}         # Path to element (e.g. .packages. or .repository.url)
+    local recordPath=${replaceElement[1]}         # to Record-Name  (e.g. tool-ninja) if empty, no record
+    local inRecordPath=${replaceElement[2]}       # in Record Path  (e.g. .version)
     local newValue=${replaceElement[3]}           # New Value to be updated
     # Check Record is included: 
     if [ -z "$recordPath" ] || [ -z "$inRecordPath" ];
@@ -26,9 +26,8 @@ updateJsonValue() {
     if [ $currValue = $newValue ]; then # Check if the values is already up to date
         echo -e "... '$jqPath' > Already up to date" # Alreaedy up to date
     else # update it! 
-        jq "$jqPath= \"$newValue\"" $fileJson > temp.json # # Set new value (replace), update the value
-        # Write back and echo
-        mv -f temp.json "$fileJson"
+        # Use sed to update the value
+        sed -i '' "s|\"$currValue\"|\"$newValue\"|g" "$fileJson"
         echo -e "... '$jqPath' > Updated"
         echo -e "    from:  \"$currValue\""
         echo -e "    to  :  \"$newValue\""
@@ -73,31 +72,38 @@ removeJsonEleme() {
 #-----------------------------------------------------------------------------------------------
 
 # create the working file temp.json 
-cp -f $fileJson platform.work.json # use be updateJsonValue()
+cp -f $fileJson platform.work.json # This file(-copy) use is by function: updateJsonValue() to change values from current "platform.json"
 
-# You can find the IDF download-URLs @
-# https://github.com/espressif/esp-idf/releases
-# It should-tobe/neeed fits-to the version you useed for the lib-build  
-urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download/$rlIdfTag/esp-idf-$rlIdfTag.zip"
-#urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip"
+# You can find the IDF download-URLs @ https://github.com/espressif/esp-idf/releases
+# It should-tobe/neeed fits-to the version you useed for the lib-build
+echo "rlIdfTag=" $rlIdfTag
+echo "rIDF_DLurlAddPathElement=" $rIDF_DLurlAddPathElement
+urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download"$rIDF_DLurlAddPathElement".zip"
+#https://github.com/espressif/esp-idf/releases/download/v5.3/esp-idf-v5.3.zip
+https://github.com/espressif/esp-idf/releases/download/v5.3/esp-idf-v5.3.zip
+https://github.com/espressif/esp-idf/releases/download/5.3/esp-idf-v5.3.zip
 
+
+#urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip" # Example for a fixed version
 
 # Set minimum PIO version
 #replaceElement=(".engines.platformio"  ""   ""   ">=6.1.15")                             && updateJsonValue "${replaceElement[@]}"
 
-# Set to own repository
+# Set to own repository changes the GH-url & the version of the platform-espressif32 
 replaceElement=(".repository.url"      ""   ""   "$urlGIT")                              && updateJsonValue "${replaceElement[@]}"
 # Version of platform-espressif32 = Date of build with lib-builder  
 replaceElement=(".version"              ""   ""   "$rlVersionPkg")                       && updateJsonValue "${replaceElement[@]}"
 
-# .packages Replacements with download URL
+# Replacements for the .packged."framework-arduinoespressif32" to use a OWN build stored at GH
 replaceElement=(".packages" "framework-arduinoespressif32" ".owner"   "$userGH")         && updateJsonValue "${replaceElement[@]}"
 replaceElement=(".packages" "framework-arduinoespressif32" ".version" "$urlfrwkArEsp32") && updateJsonValue "${replaceElement[@]}"
+
+# Replacements for the .packged."framework-espidf" to use a IDF-Framwork fitting to the OWN build (see above)
 replaceElement=(".packages" "framework-espidf"             ".owner"   "espressif")       && updateJsonValue "${replaceElement[@]}"
 replaceElement=(".packages" "framework-espidf"             ".version" $urlfrwkIDF)       && updateJsonValue "${replaceElement[@]}"
 #REMOVE_Element=(".packages" "framework-espidf"             ".optionalVersions")          && removeJsonEleme "${REMOVE_Element[@]}"
 
-# .packages Normal Replacements 
+# Replacements "NORMAL" .pagages within platform.json to diffrent verstion. Guess the need to be in line what is uses during build
 #replaceElement=(".packages" "toolchain-xtensa-esp32"   ".version" "12.2.0+20230208") && updateJsonValue "${replaceElement[@]}"
 #replaceElement=(".packages" "toolchain-xtensa-esp32s2" ".version" "12.2.0+20230208") && updateJsonValue "${replaceElement[@]}"
 #replaceElement=(".packages" "toolchain-xtensa-esp32s3" ".version" "12.2.0+20230208") && updateJsonValue "${replaceElement[@]}"
@@ -107,5 +113,24 @@ replaceElement=(".packages" "framework-espidf"             ".version" $urlfrwkID
 #replaceElement=(".packages" "tool-ninja"               ".version" "^1.9.0")          && updateJsonValue "${replaceElement[@]}"
 
 # Finalize
-mv -f platform.work.json $fileJson # Overwrite with updated file
-rm -f platform.work.json           # Remove working file
+# check if dry-run is true
+echo "dryrun: $dryrun"
+if [ $dryrun = true ]; then
+    # Dont overwrite the platform.json, just show the changes
+    echo -e "\n$eBL DRY-RUN: $eNO platform.json HAS NOT be updated. Take a look at: 'platform.work.json'"
+
+
+    # Compare the JSON files and show differences
+    if ! diff <(jq -S . "platform.work.json") <(jq -S . "platform.json") > /dev/null; then
+        echo "Differences detected between:"
+        diff <(jq -S . "platform.work.json") <(jq -S . "platform.json")
+    else
+        echo "No differences found."
+    fi
+#    jq -r . platform.work.json
+#    echo -e "\n$eBL Please check the changes above!$eNO"
+    exit 0
+else
+    mv -f platform.work.json $fileJson # Overwrite with updated file
+    rm -f platform.work.json           # Remove working file
+fi
