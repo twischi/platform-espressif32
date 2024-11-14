@@ -28,121 +28,77 @@
       "script": "builder/frameworks/espidf.py"
     }
   },
-  "packages": {
+  "packages": 
+  {
     "framework-arduinoespressif32": {
-      "type": "framework",
-      "optional": true,
-      "owner": "twischi",
-      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_tag_v5.1.4-AR_tag_3.0.1/framework-arduinoespressif32-IDF_tag_v5.1.4-AR_tag_3.0.1.tar.gz"
-    },
+        "type": "framework", "optional": true,
+        "owner": "twischi",
+        "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_tag_v5.1.4-AR_tag_3.0.1/framework-arduinoespressif32-IDF_tag_v5.1.4-AR_tag_3.0.1.tar.gz"},
     "framework-espidf": {
-      "type": "framework",
-      "optional": true,
-      "owner": "espressif",
-      "version": "https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip"
-    },
-    "toolchain-xtensa-esp32": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "12.2.0+20230208"
-    },
-    "toolchain-xtensa-esp32s2": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "12.2.0+20230208"
-    },
-    "toolchain-xtensa-esp32s3": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "12.2.0+20230208"
-    },
-    "toolchain-riscv32-esp": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "12.2.0+20230208"
-    },
-    "toolchain-esp32ulp": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.23500.0"
-    },
-    "tool-xtensa-esp-elf-gdb": {
-      "type": "debugger",
-      "optional": true,
-      "owner": "espressif",
-      "version": "~12.1.0"
-    },
-    "tool-riscv32-esp-elf-gdb": {
-      "type": "debugger",
-      "optional": true,
-      "owner": "espressif",
-      "version": "~12.1.0"
-    },
-    "tool-esptoolpy": {
-      "type": "uploader",
-      "owner": "platformio",
-      "version": "~1.40501.0"
-    },
-    "tool-dfuutil-arduino": {
-      "type": "uploader",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.11.0"
-    },
-    "tool-openocd-esp32": {
-      "type": "debugger",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~2.1200.0"
-    },
-    "tool-mklittlefs": {
-      "type": "uploader",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.203.0"
-    },
-    "tool-mkfatfs": {
-      "type": "uploader",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~2.0.0"
-    },
-    "tool-cmake": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~3.21.0"
-    },
-    "tool-ninja": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "^1.9.0"
-    },
-    "tool-mconf": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.4060000.0"
-    },
-    "tool-idf": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.0.1"
-    },
-    "tool-mkspiffs": {
-      "type": "uploader",
-      "optional": true,
-      "owner": "platformio",
-      "version": "~2.230.0"
-    },
-    "toolchain-xtensa-esp-elf": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "platformio",
-      "version": "13.2.0+20230928"
+        "type": "framework", "optional": true,
+        "owner": "espressif",
+        "version": "https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip"
     }
+    ,
+    "toolchain-xtensa-esp-elf": {
+        "type": "toolchain", "optional": true,
+        "owner": "platformio","version": "13.2.0+20240530"},
+    "toolchain-xtensa-esp32": {
+        "type": "toolchain","optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"},
+    "toolchain-xtensa-esp32s2": {
+        "type": "toolchain", "optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"},
+    "toolchain-xtensa-esp32s3": {
+        "type": "toolchain", "optional": true,
+        "owner": "espressif", "version": "12.2.0+20230208"},
+    "toolchain-riscv32-esp": {
+        "type": "toolchain", "optional": true,
+        "owner": "platformio","version": "13.2.0+20240530"},
+    "toolchain-esp32ulp": {
+        "type": "toolchain", "optional": true,
+        "owner": "platformio", "version": "~1.23800.0"
+    }
+    ,
+    "tool-xtensa-esp-elf-gdb": {
+        "type": "debugger", "optional": true,
+        "owner": "espressif", "version": "~12.1.0"},
+    "tool-riscv32-esp-elf-gdb": {
+        "type": "debugger", "optional": true,
+        "owner": "espressif", "version": "~12.1.0"},
+    "tool-openocd-esp32": {
+        "type": "debugger", "optional": true,
+        "owner": "platformio", "version": "~2.1200.0"
+    }
+    ,
+    "tool-esptoolpy": {
+        "type": "uploader",
+        "owner": "platformio","version": "~1.40501.0"},
+    "tool-dfuutil-arduino": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~1.11.0"},
+    "tool-mklittlefs": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~1.203.0"},
+    "tool-mkspiffs": {
+          "type": "uploader","optional": true,
+          "owner": "platformio","version": "~2.230.0"},
+    "tool-mkfatfs": {
+        "type": "uploader", "optional": true,
+        "owner": "platformio", "version": "~2.0.0"
+    }
+    ,
+    "tool-idf": {
+        "optional": true,
+        "owner": "platformio", "version": "~1.0.1" },
+    "tool-mconf": {
+        "optional": true,
+        "owner": "platformio", "version": "~1.4060000.0"},
+    "tool-cmake": {
+          "optional": true,
+          "owner": "platformio", "version": "~3.21.0"},
+    "tool-ninja": {
+        "optional": true,
+        "owner": "platformio", "version": "^1.9.0"}
   }
 }
