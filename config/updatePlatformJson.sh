@@ -74,18 +74,6 @@ removeJsonEleme() {
 # create the working file temp.json 
 cp -f $fileJson platform.work.json # This file(-copy) use is by function: updateJsonValue() to change values from current "platform.json"
 
-# You can find the IDF download-URLs @ https://github.com/espressif/esp-idf/releases
-# It should-tobe/neeed fits-to the version you useed for the lib-build
-echo "rlIdfTag=" $rlIdfTag
-echo "rIDF_DLurlAddPathElement=" $rIDF_DLurlAddPathElement
-urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download"$rIDF_DLurlAddPathElement".zip"
-#https://github.com/espressif/esp-idf/releases/download/v5.3/esp-idf-v5.3.zip
-https://github.com/espressif/esp-idf/releases/download/v5.3/esp-idf-v5.3.zip
-https://github.com/espressif/esp-idf/releases/download/5.3/esp-idf-v5.3.zip
-
-
-#urlfrwkIDF="https://github.com/espressif/esp-idf/releases/download/v5.1.4/esp-idf-v5.1.4.zip" # Example for a fixed version
-
 # Set minimum PIO version
 #replaceElement=(".engines.platformio"  ""   ""   ">=6.1.15")                             && updateJsonValue "${replaceElement[@]}"
 
@@ -100,7 +88,7 @@ replaceElement=(".packages" "framework-arduinoespressif32" ".version" "$urlfrwkA
 
 # Replacements for the .packged."framework-espidf" to use a IDF-Framwork fitting to the OWN build (see above)
 replaceElement=(".packages" "framework-espidf"             ".owner"   "espressif")       && updateJsonValue "${replaceElement[@]}"
-replaceElement=(".packages" "framework-espidf"             ".version" $urlfrwkIDF)       && updateJsonValue "${replaceElement[@]}"
+replaceElement=(".packages" "framework-espidf"             ".version" $rlIDF_DL_URL)     && updateJsonValue "${replaceElement[@]}"
 #REMOVE_Element=(".packages" "framework-espidf"             ".optionalVersions")          && removeJsonEleme "${REMOVE_Element[@]}"
 
 # Replacements "NORMAL" .pagages within platform.json to diffrent verstion. Guess the need to be in line what is uses during build
@@ -112,13 +100,11 @@ replaceElement=(".packages" "framework-espidf"             ".version" $urlfrwkID
 #replaceElement=(".packages" "tool-openocd-esp32"       ".version" "~2.1200.0")        && updateJsonValue "${replaceElement[@]}"
 #replaceElement=(".packages" "tool-ninja"               ".version" "^1.9.0")          && updateJsonValue "${replaceElement[@]}"
 
-# Finalize
-# check if dry-run is true
-echo "dryrun: $dryrun"
-if [ $dryrun = true ]; then
+# Finalize: save changed platform.json
+if [ ! $NdR ]; then
+    # ONLY when in dry-run is-mode
     # Dont overwrite the platform.json, just show the changes
-    echo -e "\n$eBL DRY-RUN: $eNO platform.json HAS NOT be updated. Take a look at: 'platform.work.json'"
-
+    echo -e $eRD"DRY-RUN: $eNO platform.json HAS NOT be updated. Take a look at: 'platform.work.json'"
 
     # Compare the JSON files and show differences
     if ! diff <(jq -S . "platform.work.json") <(jq -S . "platform.json") > /dev/null; then
@@ -127,10 +113,8 @@ if [ $dryrun = true ]; then
     else
         echo "No differences found."
     fi
-#    jq -r . platform.work.json
-#    echo -e "\n$eBL Please check the changes above!$eNO"
     exit 0
 else
     mv -f platform.work.json $fileJson # Overwrite with updated file
     rm -f platform.work.json           # Remove working file
-fi
+fi 

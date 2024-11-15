@@ -24,3 +24,4 @@ else
     echo -e   "       The token is needed to upload the RELEASE assets.\n"
     exit 1
 fi
+echo "GH-Token is set - VaraibleName is: tokenGH"

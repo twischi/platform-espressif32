@@ -8,17 +8,15 @@
 # --- Introduce 'dryrun'-option (2024-11-14)
 #     Call this script with 'dryrun' as argument for TESTING  
 # ----------------------------------------------------------------
-
-# *********************************************************
+clear
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+# ---------------------------------------------------------
 # Check if the script is called with 'dryrun' as argument
 # -> Set and export flag 'dryrun'
-# *********************************************************
-dryrun=0
-if [ "$1" == "dryrun" ]; then
-    echo -e "\n--- DRY-RUN MODE ---\n" &&
-    dryrun=1
-fi
-export dryrun
+# ---------------------------------------------------------
+[ "$1" == "dryrun" ] && echo -e "--- DRY-RUN MODE ---\n"  || NdR=1 && export NdR # Set flag for dry-run
+# //  $NdR Set = Dry-run  // Unset = Real run >> [ $NdR ] && COMMAND
+
 # *********************************************
 # Several common Funtions partly OS dependent
 # *********************************************
@@ -38,24 +36,32 @@ runningOS=`get_os`
 export eBL="\x1B[34m"   # echo Color (blue) for Files that are executed or used
 export eRD="\x1B[31m"   # echo Color (Red) for Targets
 export eNO="\x1B[0m"    # Back to    (Black)
-#.................................................................
-# Read (YOUR) configuration
-#.................................................................
-source config/config.sh
+# ----------------------------------------------------------------------------------
+# Read (YOUR) configuration: Gets userGH & tokenGH, needed for GitHub authentication
+# ----------------------------------------------------------------------------------
+source config/config.sh # Used for API calls
+echo "...................................................................................."
+
 #.................................................................
 # Derive Repository - Infos/URLs from the configuration
 #.................................................................
+echo "-- 1) Get Infos from this <platform-espressif32>-Repository"
 urlREPO="https://github.com/$userGH/platform-espressif32"
 urlGIT=$urlREPO.git 
 currBranch=$(git rev-parse --abbrev-ref HEAD)
 urlApi4Release="https://api.github.com/repos/$userGH/platform-espressif32/releases"
 urlUpload4Release="https://uploads.github.com/repos/$userGH/platform-espressif32/releases"
+echo -e "Repository:     $eBL$urlGIT$eNO"
+echo -e "Current Branch: $eRD$currBranch$eNO"
+echo "...................................................................................."
+
 #.................................................................
 # Read infos from build
 #.................................................................
+echo "-- 2) Read variables from 'forRelease/pio-release-info.sh'"
 # Check if needed file 'forRelease/pio-release-info.sh' is there
 if [ ! -f "forRelease/pio-release-info.sh" ]; then
-    # Needes file not found, try to locate it 
+    # FILE NOT FOUND found, try to locate it 
     # Search for 'forRelease' Folder that contains 'pio-release-info.sh'
     forReleasePath=$(find ./../ -type d -name 'forRelease' -exec test -e '{}/pio-release-info.sh' \; -print 2>/dev/null)
     # If not found, try one more level up
@@ -75,31 +81,36 @@ if [ ! -f "forRelease/pio-release-info.sh" ]; then
     fi
 fi
 # Read variables from the file
-echo "Read variables from 'forRelease/pio-release-info.sh'"
 source forRelease/pio-release-info.sh
-echo 
+echo -e "Build-Date:     $eRD$rlVersionPkg$eNO"
+echo -e "for Targets:    $eRD$rlTagets$eNO"
+echo -e "IDF-Version:    $eRD$rlIdfTag$eNO"
+echo -e "AR-Version:     $eRD$rlAR$eNO"
+echo -e "ReleaseFile:    $eBL$rlFN$eNO"
+echo -e "IDF-DL-Url:     $eBL$rlIDF_DL_URL$eNO"
+echo "...................................................................................."
+
 #.................................................................
 # Udate platform.json for the new release
 #.................................................................
 # Downlod-URL to the new release -- used in-> platfrom.json 
 urlfrwkArEsp32="$urlREPO/releases/download/$rlVersionBuild/$rlFN"
-echo -e "\n--- 1) Update platform.json for the new release\n"
+echo -e "-- 3) Update platform.json for the new release"
 source config/updatePlatformJson.sh
-echo
-
-exit 0
+echo "...................................................................................."
 
 #.................................................................
 # Commit and push the changes platform.json
 #.................................................................
-echo -e "\n--- 2) Push updated platform.json to the repository\n"
+echo -e "-- 4) Push updated platform.json to the repository"
 git add platform.json
 git commit -m "updated to new release $rlVersionBuild" >/dev/null
-git push origin $currBranch
+git push origin $currBranch >/dev/null
+echo "...................................................................................."
 #.................................................................
 # Create a tag for this release
 #.................................................................
-echo -e "\n--- 3) Create new tag for the release\n"
+echo -e "-- 5) Create new tag for the release"
 git fetch --prune origin "+refs/tags/*:refs/tags/*" --quiet # Make sure to have the latest tags locally
 tagExists=$(git tag -l "$rlVersionBuild") # Check it the tag exists
 if [ -n "$tagExists" ]; then
@@ -128,10 +139,12 @@ fi
 git tag -a $rlVersionBuild -m "Release version $rlVersionBuild"
 git push origin $rlVersionBuild --quiet
 git fetch --tags --quiet # Make sure to have the new tag locally too
+echo "...................................................................................."
+
 #.................................................................
 # Write the release info
 #.................................................................
-echo -e "\n--- 4) Create the new release\n"
+echo -e "-- 6) Create the new release"
 # Build the body of the release
 textIDF="esp-idf"
 textAR="arduino-esp32"
@@ -164,10 +177,12 @@ else
   echo -e "    Got this ReleaseID for file-upload: $eRD$ReleaseID$eNO"
 fi
 urlUpload4Release="https://uploads.github.com/repos/$userGH/platform-espressif32/releases/$ReleaseID/assets"
+echo "...................................................................................."
+
 #.................................................................
 # Load File to Relase: 'Packed release file'  
 #.................................................................
-echo -e "\n--- 5) Upload the release file\n"
+echo -e "-- 7) Upload the release file"
 loadFileApiUrl="$urlUpload4Release?name=$rlFN"
 #echo $loadFileApiUrl
 rlFN_PATH="forRelease/$rlFN"
@@ -175,18 +190,23 @@ echo -e "    Upload tar.gz will take a while ...\n$eBL"
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
 $loadFileApiUrl)
+echo "...................................................................................."
+
 #.................................................................
 # Load File to Relase: pio-release-info.txt
 #.................................................................
-echo -e "$eNO\n--- 6) Upload pio-release-info.txt file\n"
+echo -e "$eNO-- 8) Upload pio-release-info.txt file"
 loadFileApiUrl="$urlUpload4Release?name=pio-release-info.txt"
 echo "Upload pio-release-info.sh ..."
 response=$(curl -su $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type forRelease/pio-release-info.txt)" \
 --data-binary @forRelease/pio-release-info.txt \
 $loadFileApiUrl)
+echo "...................................................................................."
+
 #.................................................................
 # DONE, FINSHED
 #.................................................................
-echo -e "\nRelease done!\n"
+echo -e "                             Release DONE!"
+echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
 [[ "$runningOS" == "macos" ]] && osascript -e 'beep 10' || echo -e "\a\a\a"
