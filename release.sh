@@ -13,10 +13,10 @@
 # Check if the script is called with 'dryrun' as argument
 # -> Set and export flag 'dryrun'
 # *********************************************************
-dryrun=false
+dryrun=0
 if [ "$1" == "dryrun" ]; then
     echo -e "\n--- DRY-RUN MODE ---\n" &&
-    dryrun=true
+    dryrun=1
 fi
 export dryrun
 # *********************************************
