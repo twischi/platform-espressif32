@@ -12,7 +12,7 @@
 "type": "git",
 "url": "https://github.com/twischi/platform-espressif32.git"}
 ,
-"version": "2024.11.15",
+"version": "2024.11.16",
 "frameworks": {
     "arduino": {
     "script": "builder/frameworks/arduino.py"}
