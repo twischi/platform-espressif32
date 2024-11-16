@@ -38,13 +38,13 @@
         "owner": "platformio","version": "13.2.0+20240530"},
     "toolchain-xtensa-esp32": {
         "type": "toolchain","optional": true,
-        "owner": "espressif", "version": "11.2.0+2022r1"},
+        "owner": "espressif", "version": "8.4.0+2021r2-patch5"},
     "toolchain-xtensa-esp32s2": {
         "type": "toolchain", "optional": true,
-        "owner": "espressif", "version": "11.2.0+2022r1"},
+        "owner": "espressif", "version": "8.4.0+2021r2-patch5"},
     "toolchain-xtensa-esp32s3": {
         "type": "toolchain", "optional": true,
-        "owner": "espressif", "version": "11.2.0+2022r1"},
+        "owner": "espressif", "version": "8.4.0+2021r2-patch5"},
     "toolchain-riscv32-esp": {
         "type": "toolchain", "optional": true,
         "owner": "platformio","version": "13.2.0+20240530"},
