@@ -47,7 +47,7 @@
         "owner": "espressif", "version": "8.4.0+2021r2-patch5"},
     "toolchain-riscv32-esp": {
         "type": "toolchain", "optional": true,
-        "owner": "platformio","version": "8.4.0+2021r2-patch5"},
+        "owner": "espressif","version": "8.4.0+2021r2-patch5"},
     "toolchain-esp32ulp": {
         "type": "toolchain", "optional": true,
         "owner": "platformio", "version": "~1.23800.0"
