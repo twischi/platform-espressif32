@@ -73,9 +73,9 @@
     },
     "tool-xtensa-esp-elf-gdb": {
       "type": "debugger",
-      "optional": true,
-      "owner": "platformio",
-      "version": "14.2.0+20240403"
+      "optional": false,
+      "owner": "espressif",
+      "version": "12.1.0+20221002"
     },
     "tool-riscv32-esp-elf-gdb": {
       "type": "debugger",
