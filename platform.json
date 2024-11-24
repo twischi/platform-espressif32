@@ -18,7 +18,7 @@
     "type": "git",
     "url": "https://github.com/twischi/platform-espressif32.git"
   },
-  "version": "2024.11.23",
+  "version": "2024.11.24",
   "frameworks": {
     "arduino": {
       "script": "builder/frameworks/arduino.py"
@@ -33,13 +33,13 @@
       "type": "framework",
       "optional": true,
       "owner": "twischi",
-      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_v5.3.1-AR_3.1.0/framework-arduinoespressif32-IDF_v5.3.1-AR_3.1.0-esp32h2.tar.gz"
+      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_v5.3.1-AR_3.1.0/framework-arduinoespressif32-IDF_v5.3.1-AR_3.1.0-esp32-esp32c3-esp32h2-esp32s3.tar.gz"
     },
     "framework-arduinoespressif32-libs": {
       "type": "framework",
       "optional": false,
       "owner": "twischi",
-      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_v5.3.1-AR_3.1.0/framework-arduinoespressif32-libs-IDF_v5.3.1-AR_3.1.0-esp32h2.tar.gz"
+      "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_v5.3.1-AR_3.1.0/framework-arduinoespressif32-libs-IDF_v5.3.1-AR_3.1.0-esp32-esp32c3-esp32h2-esp32s3.tar.gz"
     },
     "framework-espidf": {
       "type": "framework",
@@ -58,7 +58,7 @@
       "optional": true,
       "owner": "espressif",
       "version": "12.2.0+20230208"
-    },  
+    },
     "toolchain-riscv32-esp": {
       "type": "toolchain",
       "optional": true,
