@@ -101,7 +101,7 @@
       "type": "uploader",
       "optional": true,
       "owner": "platformio",
-      "version": "~2.0.0"
+      "version": "~1.203.0"
     },
     "tool-mkspiffs": {
       "type": "uploader",
