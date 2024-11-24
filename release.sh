@@ -107,6 +107,7 @@ echo "..........................................................................
 echo -e "-- 4) Push updated platform.json to the repository"
 git add platform.json
 git commit -m "updated to new release $rlVersionBuild" >/dev/null
+echo $(pwd)
 git push origin $currBranch >/dev/null
 echo "...................................................................................."
 #.................................................................
