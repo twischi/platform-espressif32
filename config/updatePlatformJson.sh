@@ -26,8 +26,9 @@ updateJsonValue() {
     if [ $currValue = $newValue ]; then # Check if the values is already up to date
         echo -e "... '$jqPath' > Already up to date" # Alreaedy up to date
     else # update it! 
-        # Use sed to update the value
-        sed -i '' "s|\"$currValue\"|\"$newValue\"|g" "$fileJson"
+        jq "$jqPath= \"$newValue\"" $fileJson > temp.json # # Set new value (replace), update the value
+        # Write back and echo
+        mv -f temp.json "$fileJson"
         echo -e "... '$jqPath' > Updated"
         echo -e "    from:  \"$currValue\""
         echo -e "    to  :  \"$newValue\""
@@ -79,12 +80,17 @@ cp -f $fileJson platform.work.json # This file(-copy) use is by function: update
 
 # Set to own repository changes the GH-url & the version of the platform-espressif32 
 replaceElement=(".repository.url"      ""   ""   "$urlGIT")                              && updateJsonValue "${replaceElement[@]}"
+
 # Version of platform-espressif32 = Date of build with lib-builder  
-replaceElement=(".version"              ""   ""   "$rlVersionPkg")                       && updateJsonValue "${replaceElement[@]}"
+ replaceElement=(".version"              ""   ""   "$rlVersionPkg")                       && updateJsonValue "${replaceElement[@]}"
 
 # Replacements for the .packged."framework-arduinoespressif32" to use a OWN build stored at GH
 replaceElement=(".packages" "framework-arduinoespressif32" ".owner"   "$userGH")         && updateJsonValue "${replaceElement[@]}"
 replaceElement=(".packages" "framework-arduinoespressif32" ".version" "$urlfrwkArEsp32") && updateJsonValue "${replaceElement[@]}"
+
+# Replacements for the .packged."framework-arduinoespressif32-libs" to use a OWN build stored at GH
+replaceElement=(".packages" "framework-arduinoespressif32-libs" ".owner"   "$userGH")    && updateJsonValue "${replaceElement[@]}"
+replaceElement=(".packages" "framework-arduinoespressif32-libs" ".version" "$urlArLibsEsp32") && updateJsonValue "${replaceElement[@]}"
 
 # Replacements for the .packged."framework-espidf" to use a IDF-Framwork fitting to the OWN build (see above)
 replaceElement=(".packages" "framework-espidf"             ".owner"   "espressif")       && updateJsonValue "${replaceElement[@]}"

@@ -53,29 +53,11 @@
       "owner": "platformio",
       "version": "13.2.0+20240530"
     },
-    "toolchain-xtensa-esp32": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "8.4.0+2021r2-patch5"
-    },
-    "toolchain-xtensa-esp32s2": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "8.4.0+2021r2-patch5"
-    },
-    "toolchain-xtensa-esp32s3": {
-      "type": "toolchain",
-      "optional": true,
-      "owner": "espressif",
-      "version": "8.4.0+2021r2-patch5"
-    },
     "toolchain-riscv32-esp": {
       "type": "toolchain",
       "optional": true,
-      "owner": "espressif",
-      "version": "8.4.0+2021r2-patch5"
+      "owner": "platformio",
+      "version": "13.2.0+20240530"
     },
     "toolchain-esp32ulp": {
       "type": "toolchain",
@@ -86,25 +68,25 @@
     "tool-xtensa-esp-elf-gdb": {
       "type": "debugger",
       "optional": true,
-      "owner": "espressif",
-      "version": "~12.1.0"
+      "owner": "platformio",
+      "version": "14.2.0+20240403"
     },
     "tool-riscv32-esp-elf-gdb": {
       "type": "debugger",
       "optional": true,
-      "owner": "espressif",
-      "version": "~12.1.0"
+      "owner": "platformio",
+      "version": "14.2.0+20240403"
     },
     "tool-openocd-esp32": {
       "type": "debugger",
       "optional": true,
       "owner": "platformio",
-      "version": "~2.1200.0"
+      "version": "~2.1100.0"
     },
     "tool-esptoolpy": {
       "type": "uploader",
-      "owner": "platformio",
-      "version": "~1.40501.0"
+      "owner": "pioarduino",
+      "version": "https://github.com/pioarduino/esptool/releases/download/v4.8.1.1/esptool.zip"
     },
     "tool-dfuutil-arduino": {
       "type": "uploader",
@@ -129,16 +111,6 @@
       "optional": true,
       "owner": "platformio",
       "version": "~2.0.0"
-    },
-    "tool-idf": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.0.1"
-    },
-    "tool-mconf": {
-      "optional": true,
-      "owner": "platformio",
-      "version": "~1.4060000.0"
     },
     "tool-cmake": {
       "optional": true,

@@ -86,7 +86,8 @@ echo -e "Build-Date:     $eRD$rlVersionPkg$eNO"
 echo -e "for Targets:    $eRD$rlTagets$eNO"
 echo -e "IDF-Version:    $eRD$rlIdfTag$eNO"
 echo -e "AR-Version:     $eRD$rlAR$eNO"
-echo -e "ReleaseFile:    $eBL$rlFN$eNO"
+echo -e "PIO-FrmwkFile:  $eBL$rlFrmwFN$eNO"
+echo -e "EspArLibsFile:  $eBL$rlArLibsFN$eNO"
 echo -e "IDF-DL-Url:     $eBL$rlIDF_DL_URL$eNO"
 echo "...................................................................................."
 
@@ -94,7 +95,8 @@ echo "..........................................................................
 # Udate platform.json for the new release
 #.................................................................
 # Downlod-URL to the new release -- used in-> platfrom.json 
-urlfrwkArEsp32="$urlREPO/releases/download/$rlVersionBuild/$rlFN"
+urlfrwkArEsp32="$urlREPO/releases/download/$rlVersionBuild/$rlFrmwFN"    # URL to the new framework file
+urlArLibsEsp32="$urlREPO/releases/download/$rlVersionBuild/$rlArLibsFN"  # URL to the new Arduino libs file
 echo -e "-- 3) Update platform.json for the new release"
 source config/updatePlatformJson.sh
 echo "...................................................................................."
@@ -180,12 +182,23 @@ urlUpload4Release="https://uploads.github.com/repos/$userGH/platform-espressif32
 echo "...................................................................................."
 
 #.................................................................
-# Load File to Relase: 'Packed release file'  
+# Load Files to Relase: 'Packed release file: for 'FRAMEWORK'   
 #.................................................................
-echo -e "-- 7) Upload the release file"
-loadFileApiUrl="$urlUpload4Release?name=$rlFN"
+echo -e "-- 7a) Upload the release file (FRAMEWORK)" 
+loadFileApiUrl="$urlUpload4Release?name=$rlFrmwFN"
 #echo $loadFileApiUrl
-rlFN_PATH="forRelease/$rlFN"
+rlFN_PATH="forRelease/$rlFrmwFN"
+echo -e "    Upload tar.gz will take a while ...\n$eBL"
+response=$(curl -u $userGH:$tokenGH -X POST \
+-H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
+$loadFileApiUrl)
+#.................................................................
+# Load Files to Relase: 'Packed release file: for 'ESP32-AR-LIBS'   
+#.................................................................
+echo -e "-- 7b) Upload the release file (ESP32-AR-LIBS)" 
+loadFileApiUrl="$urlUpload4Release?name=$rlArLibsFN"
+#echo $loadFileApiUrl
+rlFN_PATH="forRelease/$rlArLibsFN"
 echo -e "    Upload tar.gz will take a while ...\n$eBL"
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
