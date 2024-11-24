@@ -125,7 +125,7 @@ if [ -n "$tagExists" ]; then
     if [[ -n "$_Dbg_file" ]]; then # Is running in bash debug mode?
         response="y"
     else
-        echo -e "$eRD Do you want to REPLACE the existing release? (y/n)$eNO"
+        echo -e "$eRD   Do you want to REPLACE the existing release? (y/n)$eNO"
         read -r response
     fi
     if [[ "$response" == "y" || "$response" == "Y" ]]; then
@@ -194,18 +194,18 @@ echo -e "-- 7a) Upload the release file (FRAMEWORK)"
 loadFileApiUrl="$urlUpload4Release?name=$rlFrmwFN"
 #echo $loadFileApiUrl
 rlFN_PATH="forRelease/$rlFrmwFN"
-echo -e "    Upload tar.gz will take a while ...$eBL" && echo -n "    "
+echo -e "   Upload tar.gz will take a while ...$eBL"
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
 $loadFileApiUrl)
 #.................................................................
 # Load Files to Relase: 'Packed release file: for 'ESP32-AR-LIBS'   
 #.................................................................
-echo -e "-- 7b) Upload the release file (ESP32-AR-LIBS)" 
+echo -e "$eNO-- 7b) Upload the release file (ESP32-AR-LIBS)" 
 loadFileApiUrl="$urlUpload4Release?name=$rlArLibsFN"
 #echo $loadFileApiUrl
 rlFN_PATH="forRelease/$rlArLibsFN"
-echo -e "    Upload tar.gz will take a while ...$eBL" && echo -n "    "
+echo -e "   Upload tar.gz will take a while ...$eBL" && echo -n "    "
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
 $loadFileApiUrl)
@@ -221,7 +221,7 @@ response=$(curl -su $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type forRelease/pio-release-info.txt)" \
 --data-binary @forRelease/pio-release-info.txt \
 $loadFileApiUrl)
-echo "   $urlREPO/releases"
+echo -e "   $eBL$urlREPO/releases$eNO"
 echo "...................................................................................."
 
 #.................................................................
