@@ -63,7 +63,7 @@ echo "-- 2) Read variables from 'forRelease/pio-release-info.sh'"
 if [ ! -f "forRelease/pio-release-info.sh" ]; then
     # FILE NOT FOUND found, try to locate it 
     # Search for 'forRelease' Folder that contains 'pio-release-info.sh'
-    forReleasePath=$(find ./../ -type d -name 'forRelease' -exec test -e '{}/pio-release-info.sh' \; -print 2>/dev/null)
+    forReleasePath=$(find ./../PIO-Out/ -type d -name 'forRelease' -exec test -e '{}/pio-release-info.sh' \; -print 2>/dev/null)
     # If not found, try one more level up
     if [ -z "$forReleasePath" ]; then
         forReleasePath=$(find ./../../ -type d -name 'forRelease' -exec test -e '{}/pio-release-info.sh' \; -print 2>/dev/null)
@@ -107,8 +107,12 @@ echo "..........................................................................
 echo -e "-- 4) Push updated platform.json to the repository"
 git add platform.json
 git commit -m "updated to new release $rlVersionBuild" >/dev/null
-echo $(pwd)
 git push origin $currBranch >/dev/null
+if [ $? -ne 0 ]; then
+    echo -e $eRD"Git push failed for branch $eBL$currBranche$NO"
+    echo -e     "Are you logged in to GitHub at your machine running this?"
+    exit 1
+fi
 echo "...................................................................................."
 #.................................................................
 # Create a tag for this release
@@ -117,7 +121,7 @@ echo -e "-- 5) Create new tag for the release"
 git fetch --prune origin "+refs/tags/*:refs/tags/*" --quiet # Make sure to have the latest tags locally
 tagExists=$(git tag -l "$rlVersionBuild") # Check it the tag exists
 if [ -n "$tagExists" ]; then
-    echo -e "$eRD!!! Tag= '$rlVersionBuild' already exists!\n$eNO"
+    echo -e "   $eRD!!! Tag= '$rlVersionBuild' already exists!$eNO"
     if [[ -n "$_Dbg_file" ]]; then # Is running in bash debug mode?
         response="y"
     else
@@ -126,11 +130,12 @@ if [ -n "$tagExists" ]; then
     fi
     if [[ "$response" == "y" || "$response" == "Y" ]]; then
         # Commands to delete the release
-        echo "    Deleting the release..."
+        echo "   Deleting the release..."
         # Find the release ID by the tag name
         tempReleaseID=$(curl -su $userGH:$tokenGH $urlApi4Release/tags/$rlVersionBuild | jq '.id')
         # Delete the release
         response=$(curl -su $userGH:$tokenGH -X DELETE $urlApi4Release/$tempReleaseID)
+        echo -n "   "
         git tag -d $rlVersionBuild # Delete the tag locally
         git push --delete origin $rlVersionBuild --quiet # Delete the tag remotely
     else
@@ -189,7 +194,7 @@ echo -e "-- 7a) Upload the release file (FRAMEWORK)"
 loadFileApiUrl="$urlUpload4Release?name=$rlFrmwFN"
 #echo $loadFileApiUrl
 rlFN_PATH="forRelease/$rlFrmwFN"
-echo -e "    Upload tar.gz will take a while ...\n$eBL"
+echo -e "    Upload tar.gz will take a while ...$eBL" && echo -n "    "
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
 $loadFileApiUrl)
@@ -200,7 +205,7 @@ echo -e "-- 7b) Upload the release file (ESP32-AR-LIBS)"
 loadFileApiUrl="$urlUpload4Release?name=$rlArLibsFN"
 #echo $loadFileApiUrl
 rlFN_PATH="forRelease/$rlArLibsFN"
-echo -e "    Upload tar.gz will take a while ...\n$eBL"
+echo -e "    Upload tar.gz will take a while ...$eBL" && echo -n "    "
 response=$(curl -u $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type $rlFN_PATH)" --data-binary @$rlFN_PATH \
 $loadFileApiUrl)
@@ -211,11 +216,12 @@ echo "..........................................................................
 #.................................................................
 echo -e "$eNO-- 8) Upload pio-release-info.txt file"
 loadFileApiUrl="$urlUpload4Release?name=pio-release-info.txt"
-echo "Upload pio-release-info.sh ..."
+echo "   Upload pio-release-info.sh ..."
 response=$(curl -su $userGH:$tokenGH -X POST \
 -H "Content-Type: $(file -b --mime-type forRelease/pio-release-info.txt)" \
 --data-binary @forRelease/pio-release-info.txt \
 $loadFileApiUrl)
+echo "   $urlREPO/releases"
 echo "...................................................................................."
 
 #.................................................................
