@@ -37,7 +37,7 @@
     },
     "framework-arduinoespressif32-libs": {
       "type": "framework",
-      "optional": true,
+      "optional": false,
       "owner": "twischi",
       "version": "https://github.com/twischi/platform-espressif32/releases/download/IDF_v5.3.1-AR_3.1.0/framework-arduinoespressif32-libs-IDF_v5.3.1-AR_3.1.0-esp32h2.tar.gz"
     },
