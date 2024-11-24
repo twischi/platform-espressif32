@@ -29,9 +29,6 @@ platform = env.PioPlatform()
 # Helpers
 #
 
-extra_flags = ''.join([element.replace("-D", " ") for element in env.BoardConfig().get("build.extra_flags", "")])
-build_flags = ''.join([element.replace("-D", " ") for element in env.GetProjectOption("build_flags")])
-
 FRAMEWORK_DIR = platform.get_package_dir("framework-arduinoespressif32")
 
 def BeforeUpload(target, source, env):
@@ -134,7 +131,7 @@ def _parse_partitions(env):
 
     result = []
     next_offset = 0
-    bound = int(board.get("upload.offset_address", "0x10000"), 16) # default 0x10000
+    app_offset = int(board.get("upload.offset_address", "0x10000"), 16) # default 0x10000
     with open(partitions_csv) as fp:
         for line in fp.readlines():
             line = line.strip()
@@ -143,23 +140,25 @@ def _parse_partitions(env):
             tokens = [t.strip() for t in line.split(",")]
             if len(tokens) < 5:
                 continue
+            bound = 0x10000 if tokens[1] in ("0", "app") else 4
+            calculated_offset = (next_offset + bound - 1) & ~(bound - 1)
             partition = {
                 "name": tokens[0],
                 "type": tokens[1],
                 "subtype": tokens[2],
-                "offset": tokens[3] or next_offset,
+                "offset": tokens[3] or calculated_offset,
                 "size": tokens[4],
                 "flags": tokens[5] if len(tokens) > 5 else None
             }
             result.append(partition)
             next_offset = _parse_size(partition["offset"])
             if (partition["subtype"] == "ota_0"):
-                bound = next_offset
-            next_offset = (next_offset + bound - 1) & ~(bound - 1)
+                app_offset = next_offset
+            next_offset = next_offset + _parse_size(partition["size"])
     # Configure application partition offset
-    env.Replace(ESP32_APP_OFFSET=str(hex(bound)))
+    env.Replace(ESP32_APP_OFFSET=str(hex(app_offset)))
     # Propagate application offset to debug configurations
-    env["INTEGRATION_EXTRA_DATA"].update({"application_offset": str(hex(bound))})
+    env["INTEGRATION_EXTRA_DATA"].update({"application_offset": str(hex(app_offset))})
     return result
 
 
@@ -192,6 +191,7 @@ def _update_max_upload_size(env):
             break
 
 
+
 def _to_unix_slashes(path):
     return path.replace("\\", "/")
 
@@ -204,7 +204,7 @@ def _to_unix_slashes(path):
 def fetch_fs_size(env):
     fs = None
     for p in _parse_partitions(env):
-        if p["type"] == "data" and p["subtype"] in ("spiffs", "fat"):
+        if p["type"] == "data" and p["subtype"] in ("spiffs", "fat", "littlefs"):
             fs = p
     if not fs:
         sys.stderr.write(
@@ -234,7 +234,7 @@ board = env.BoardConfig()
 mcu = board.get("build.mcu", "esp32")
 toolchain_arch = "xtensa-%s" % mcu
 filesystem = board.get("build.filesystem", "spiffs")
-if mcu in ("esp32c2", "esp32c3", "esp32c6", "esp32h2"):
+if mcu in ("esp32c2", "esp32c3", "esp32c6", "esp32h2", "esp32p4"):
     toolchain_arch = "riscv32-esp"
 
 if "INTEGRATION_EXTRA_DATA" not in env:
@@ -255,7 +255,7 @@ env.Replace(
     GDB=join(
         platform.get_package_dir(
             "tool-riscv32-esp-elf-gdb"
-            if mcu in ("esp32c2", "esp32c3", "esp32c6")
+            if mcu in ("esp32c2", "esp32c3", "esp32c6", "esp32h2", "esp32p4")
             else "tool-xtensa-esp-elf-gdb"
         )
         or "",
@@ -279,8 +279,20 @@ env.Replace(
     ],
     ERASECMD='"$PYTHONEXE" "$OBJCOPY" $ERASEFLAGS erase_flash',
 
-    MKFSTOOL="mk%s" % filesystem,
-
+    # mkspiffs package contains two different binaries for IDF and Arduino
+    MKFSTOOL="mk%s" % filesystem
+    + (
+        (
+            "_${PIOPLATFORM}_"
+            + (
+                "espidf"
+                if "espidf" in env.subst("$PIOFRAMEWORK")
+                else "${PIOFRAMEWORK}"
+            )
+        )
+        if filesystem == "spiffs"
+        else ""
+    ),
     # Legacy `ESP32_SPIFFS_IMAGE_NAME` is used as the second fallback value for
     # backward compatibility
     ESP32_FS_IMAGE_NAME=env.get(
@@ -320,7 +332,7 @@ env.Append(
                             "-b",
                             "$FS_BLOCK",
                         ]
-                        if filesystem in ("spiffs", "littlefs")
+                        if filesystem in ("littlefs", "spiffs")
                         else []
                     )
                     + ["$TARGET"]

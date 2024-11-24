@@ -11,3 +11,4 @@ forRelease/*.gz
 forRelease/*.zip
 forRelease/Archive/
 config/.gitHubToken
+*pioar*
