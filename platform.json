@@ -53,6 +53,12 @@
       "owner": "platformio",
       "version": "13.2.0+20240530"
     },
+    "toolchain-xtensa-esp32s2": {
+      "type": "toolchain",
+      "optional": true,
+      "owner": "espressif",
+      "version": "12.2.0+20230208"
+    },
     "toolchain-xtensa-esp32s3": {
       "type": "toolchain",
       "optional": true,
@@ -74,8 +80,8 @@
     "tool-xtensa-esp-elf-gdb": {
       "type": "debugger",
       "optional": false,
-      "owner": "espressif",
-      "version": "12.1.0+20221002"
+      "owner": "platformio",
+      "version": "14.2.0+20240403"
     },
     "tool-riscv32-esp-elf-gdb": {
       "type": "debugger",
@@ -91,8 +97,8 @@
     },
     "tool-esptoolpy": {
       "type": "uploader",
-      "owner": "pioarduino",
-      "version": "https://github.com/pioarduino/esptool/releases/download/v4.8.1.1/esptool.zip"
+      "owner": "platformio",
+      "version": "1.40501.0"
     },
     "tool-dfuutil-arduino": {
       "type": "uploader",
